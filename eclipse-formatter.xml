@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<profiles version="13">
+    <profile kind="CodeFormatterProfile" name="CustomStyle" version="13">
+        <setting id="org.eclipse.jdt.core.formatter.indentation.size" value="4"/>
+        <setting id="org.eclipse.jdt.core.formatter.tabulation.char" value="space"/>
+        <setting id="org.eclipse.jdt.core.formatter.tabulation.size" value="4"/>
+        <setting id="org.eclipse.jdt.core.formatter.lineSplit" value="120"/>
+        
+        <!-- 方法参数对齐：每行一个参数 -->
+        <setting id="org.eclipse.jdt.core.formatter.alignment_for_parameters_in_method_declaration" value="48"/>
+        <setting id="org.eclipse.jdt.core.formatter.alignment_for_parameters_in_constructor_declaration" value="48"/>
+        
+        <!-- 续行缩进 -->
+        <setting id="org.eclipse.jdt.core.formatter.continuation_indentation" value="2"/>
+        <setting id="org.eclipse.jdt.core.formatter.continuation_indentation_for_array_initializer" value="2"/>
+        
+        <!-- 在右括号前插入新行 -->
+        <setting id="org.eclipse.jdt.core.formatter.insert_new_line_before_closing_paren_in_method_declaration" value="insert"/>
+        <setting id="org.eclipse.jdt.core.formatter.insert_new_line_before_closing_paren_in_constructor_declaration" value="insert"/>
+        
+        <!-- 语句相对于方法体缩进 -->
+        <setting id="org.eclipse.jdt.core.formatter.indent_statements_compare_to_body" value="true"/>
+        
+        <!-- 大括号位置 -->
+        <setting id="org.eclipse.jdt.core.formatter.brace_position_for_method_declaration" value="end_of_line"/>
+        <setting id="org.eclipse.jdt.core.formatter.brace_position_for_constructor_declaration" value="end_of_line"/>
+        <setting id="org.eclipse.jdt.core.formatter.brace_position_for_block" value="end_of_line"/>
+        <setting id="org.eclipse.jdt.core.formatter.brace_position_for_type_declaration" value="end_of_line"/>
+        
+        <!-- 其他常用设置 -->
+        <setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_method_declaration" value="do not insert"/>
+        <setting id="org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_method_declaration" value="do not insert"/>
+        <setting id="org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_constructor_declaration" value="do not insert"/>
+        <setting id="org.eclipse.jdt.core.formatter.insert_space_before_closing_paren_in_constructor_declaration" value="do not insert"/>
+        
+        <!-- 空行设置 -->
+        <setting id="org.eclipse.jdt.core.formatter.blank_lines_before_method" value="1"/>
+        <setting id="org.eclipse.jdt.core.formatter.blank_lines_before_package" value="0"/>
+        <setting id="org.eclipse.jdt.core.formatter.blank_lines_after_package" value="1"/>
+        <setting id="org.eclipse.jdt.core.formatter.blank_lines_before_imports" value="1"/>
+        <setting id="org.eclipse.jdt.core.formatter.blank_lines_after_imports" value="1"/>
+        <setting id="org.eclipse.jdt.core.formatter.blank_lines_between_type_declarations" value="2"/>
+        
+        <!-- 注释设置 -->
+        <setting id="org.eclipse.jdt.core.formatter.comment.format_javadoc_comments" value="true"/>
+        <setting id="org.eclipse.jdt.core.formatter.comment.format_block_comments" value="true"/>
+        <setting id="org.eclipse.jdt.core.formatter.comment.format_line_comments" value="true"/>
+        <setting id="org.eclipse.jdt.core.formatter.comment.line_length" value="120"/>
+    </profile>
+</profiles>

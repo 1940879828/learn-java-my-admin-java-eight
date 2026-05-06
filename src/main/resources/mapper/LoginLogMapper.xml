@@ -1,9 +1,8 @@
-<!-- 定义 XML 版本和编码 -->
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 引用 MyBatis 的 DTD 文件，提供语法验证 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace 属性指定对应的 Java 接口 -->
-<mapper namespace="org.example.jwtjavaeight.mapper.LoginLogMapper">
+<mapper namespace="org.example.myadminjavaeight.mapper.LoginLogMapper">
     <!-- 
         id 属性指定方法名，
         parameterType 属性指定参数类型，

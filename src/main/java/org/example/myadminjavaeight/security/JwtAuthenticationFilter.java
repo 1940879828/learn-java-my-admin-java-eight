@@ -1,8 +1,8 @@
 package org.example.myadminjavaeight.security;
 
 import java.io.IOException;
-import java.security.Security;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.servlet.FilterChain;
@@ -14,7 +14,6 @@ import org.example.myadminjavaeight.config.JwtConfig;
 import org.example.myadminjavaeight.constants.SecurityConstants;
 import org.example.myadminjavaeight.domain.entity.sys.SysUser;
 import org.example.myadminjavaeight.utils.JwtUtil;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -40,11 +39,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final JwtConfig jwtConfig;
 
+    /**
+     * 构造函数，注入 JWT 工具类和配置
+     */
     public JwtAuthenticationFilter(JwtUtil jwtUtil, JwtConfig jwtConfig) {
         this.jwtUtil = jwtUtil;
         this.jwtConfig = jwtConfig;
     }
 
+    /**
+     * 过滤器核心方法，处理每个 HTTP 请求的 JWT 认证
+     * @param request HTTP 请求
+     * @param response HTTP 响应
+     * @param filterChain 过滤器链
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -75,7 +83,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // 【Java 8 Stream】将逗号分隔的权限字符串转为权限对象列表
             List<SimpleGrantedAuthority> authorities = Stream.of(authoritiesStr.split(","))
                     .map(SimpleGrantedAuthority::new)
-                    .toList();
+                    .collect(Collectors.toList());
 
             // 构建 Spring Security 认证对象并设置到上下文
             JwtUserDetails userDetails = new JwtUserDetails(buildUserEntity(userId, username));
@@ -138,6 +146,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         response.getWriter().write("{\"code\":401,\"message\":\"Token已过期或无效\"}");
     }
 
+    /**
+     * 构建用户实体对象
+     * 从 JWT Token 解析出的用户信息构建 SysUser 对象
+     * @param userId 用户ID
+     * @param username 用户名
+     * @return SysUser 用户实体
+     */
     private SysUser buildUserEntity(Long userId, String username) {
         SysUser user = new SysUser();
         user.setId(userId);

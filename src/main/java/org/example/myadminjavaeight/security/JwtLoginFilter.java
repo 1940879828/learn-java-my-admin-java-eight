@@ -45,7 +45,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
         setAuthenticationSuccessHandler(successHandler);
         setAuthenticationFailureHandler(failureHandler);
         // 指定拦截的登录路径和方法
-        setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/auth/login", "POST"));
+        setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/api/auth/login", "POST"));
     }
 
     /**

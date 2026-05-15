@@ -1,5 +1,6 @@
 package org.example.myadminjavaeight.config;
 
+import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.example.myadminjavaeight.domain.dto.LoginRequest;
 import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
@@ -65,12 +67,18 @@ public class OpenApiConfig {
                             .scheme("bearer")
                             .bearerFormat("JWT")
                     )
+                    .addSchemas(
+                        "LoginRequest",
+                        ModelConverters.getInstance()
+                            .readAllAsResolvedSchema(LoginRequest.class)
+                            .schema
+                    )
             )
             // 全局默认所有接口都要求 Bearer Token（具体接口可单独覆盖）
             .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
             // 登录接口由 JwtLoginFilter 拦截处理、没有对应 Controller 方法，
             // springdoc 扫描不到，这里手动补充其文档定义
-            .path("/api/v1/auth/login", createLoginPathItem());
+            .path("/api/auth/login", createLoginPathItem());
     }
 
     /**
@@ -96,7 +104,9 @@ public class OpenApiConfig {
                                         "application/json",
                                         new MediaType()
                                             .schema(new Schema<>().$ref("#/components/schemas/LoginRequest"))
-                                            .example("{username:admin,password:123456}")
+                                            .example(
+                                                "{\"username\": \"admin\", \"password\": \"123456\"}"
+                                            )
                                     )
                             )
                     )

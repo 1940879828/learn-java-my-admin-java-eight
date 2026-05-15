@@ -3,7 +3,6 @@ package org.example.myadminjavaeight.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.example.myadminjavaeight.common.Result;
-import org.example.myadminjavaeight.domain.dto.LoginRequest;
 import org.example.myadminjavaeight.domain.dto.LoginResponse;
 import org.example.myadminjavaeight.domain.dto.RefreshRequest;
 import org.example.myadminjavaeight.domain.dto.RegisterRequest;
@@ -23,12 +22,6 @@ public class AuthController {
 
     public AuthController(AuthService authService) {
         this.authService = authService;
-    }
-
-    @PostMapping("/login")
-    @Operation(summary = "用户登录")
-    public Result<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
-        throw new RuntimeException("此接口由 JwtLoginFilter 拦截处理，不应到达 Controller");
     }
 
     @PostMapping("/register")

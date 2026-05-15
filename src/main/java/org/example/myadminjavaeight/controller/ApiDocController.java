@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,6 +42,7 @@ public class ApiDocController {
      * 导出所有 Schemas 定义
      */
     @GetMapping(value = "/schemas", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('system:dev-tools')")
     public Map<String, Object> getSchemas() {
         try {
             JsonNode openApiDoc = getOpenApiDoc();
@@ -71,6 +73,7 @@ public class ApiDocController {
      * 导出完整的 OpenAPI 文档
      */
     @GetMapping(value = "/full", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('system:dev-tools')")
     public JsonNode getFullApiDoc() {
         try {
             return getOpenApiDoc();
@@ -84,6 +87,7 @@ public class ApiDocController {
 
     /** 导出所有 API 接口列表 */
     @GetMapping(value = "/apis", produces = MediaType.TEXT_PLAIN_VALUE)
+    @PreAuthorize("hasAuthority('system:dev-tools')")
     public String getApis() {
         try {
             JsonNode openApiDoc = getOpenApiDoc();

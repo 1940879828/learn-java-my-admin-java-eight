@@ -83,7 +83,7 @@ public class OpenApiConfig {
                 new Operation()
                     .summary("用户登录")
                     .description("用户登录接口，由 JwtLoginFilter 处理，返回 Access Token 和 Refresh Token")
-                    .tags(Collections.singletonList("认证"))
+                    .tags(Collections.singletonList("认证管理"))
                     // 覆盖全局安全要求：登录接口本身不需要 Token
                     .security(Collections.emptyList())
                     .requestBody(

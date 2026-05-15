@@ -5,17 +5,14 @@ import org.example.myadminjavaeight.config.JwtConfig;
 import org.example.myadminjavaeight.constants.SecurityConstants;
 import org.example.myadminjavaeight.domain.dto.LoginResponse;
 import org.example.myadminjavaeight.domain.dto.RefreshRequest;
-import org.example.myadminjavaeight.domain.dto.RegisterRequest;
 import org.example.myadminjavaeight.domain.entity.sys.SysRefreshToken;
 import org.example.myadminjavaeight.domain.entity.sys.SysUser;
 import org.example.myadminjavaeight.exception.TokenExpiredException;
-import org.example.myadminjavaeight.exception.UsernameExistsException;
 import org.example.myadminjavaeight.mapper.RefreshTokenMapper;
 import org.example.myadminjavaeight.mapper.UserMapper;
 import org.example.myadminjavaeight.service.AuthService;
 import org.example.myadminjavaeight.utils.HashUtil;
 import org.example.myadminjavaeight.utils.JwtUtil;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,38 +25,17 @@ public class AuthServiceImpl implements AuthService {
     private final JwtConfig jwtConfig;
     private final RefreshTokenMapper refreshTokenMapper;
     private final UserMapper userMapper;
-    private final PasswordEncoder passwordEncoder;
 
     public AuthServiceImpl(
         JwtUtil jwtUtil,
         JwtConfig jwtConfig,
         RefreshTokenMapper refreshTokenMapper,
-        UserMapper userMapper,
-        PasswordEncoder passwordEncoder
+        UserMapper userMapper
     ){
         this.jwtUtil = jwtUtil;
         this.jwtConfig = jwtConfig;
         this.refreshTokenMapper = refreshTokenMapper;
         this.userMapper = userMapper;
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    @Override
-    @Transactional
-    public void register(RegisterRequest registerRequest) {
-
-        SysUser existingUser = userMapper.findByUsername(registerRequest.getUsername());
-        if (existingUser != null) {
-            throw new UsernameExistsException();
-        }
-        SysUser user = new SysUser();
-        user.setUsername(registerRequest.getUsername());
-        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setNickName(registerRequest.getNickName());
-        user.setStatus(1);
-        user.setCreateTime(new Date());
-
-        userMapper.insert(user);
     }
 
     @Override
@@ -119,11 +95,5 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public void logout(Long userId) {
         refreshTokenMapper.deleteByUserId(userId);
-    }
-
-    @Override
-    @Transactional
-    public void unlockUser(Long userId) {
-        userMapper.unlockUser(userId);
     }
 }

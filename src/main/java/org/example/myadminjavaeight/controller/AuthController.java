@@ -1,6 +1,7 @@
 package org.example.myadminjavaeight.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.example.myadminjavaeight.common.Result;
 import org.example.myadminjavaeight.domain.dto.LoginResponse;
@@ -32,7 +33,7 @@ public class AuthController {
 
     @PostMapping("/logout")
     @Operation(summary = "用户登出")
-    public Result<Void> logout(@AuthenticationPrincipal JwtUserDetails userDetails) {
+    public Result<Void> logout(@Parameter(hidden = true) @AuthenticationPrincipal JwtUserDetails userDetails) {
         authService.logout(userDetails.getUserId());
         return Result.success();
     }

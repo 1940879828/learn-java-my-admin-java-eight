@@ -55,6 +55,7 @@ public class AuthServiceImpl implements AuthService {
         SysUser user = new SysUser();
         user.setUsername(registerRequest.getUsername());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setNickName(registerRequest.getNickName());
         user.setStatus(1);
         user.setCreateTime(new Date());
 

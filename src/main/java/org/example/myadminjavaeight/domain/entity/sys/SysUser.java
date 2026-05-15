@@ -25,4 +25,6 @@ public class SysUser {
   private Date lockTime;
   /** 锁定剩余秒数（从SQL计算得出，非数据库字段） */
   private Long lockRemainingSeconds;
+  /** 名字 */
+  private String nickName;
 }

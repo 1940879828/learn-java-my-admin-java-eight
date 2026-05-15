@@ -11,34 +11,41 @@
         <result column="failed_attempts" property="failedAttempts"/>
         <result column="lock_time" property="lockTime"/>
         <result column="lock_remaining_seconds" property="lockRemainingSeconds"/>
+        <result column="nick_name" property="nickName"/>
     </resultMap>
 
     <select id="findByUsername" resultMap="BaseResultMap">
-        SELECT id, username, password, status, create_time, failed_attempts, lock_time
+        SELECT id, username, password, status, create_time, failed_attempts, lock_time, nick_name
         FROM sys_user
         WHERE username = #{username}
     </select>
 
     <select id="findById" resultMap="BaseResultMap">
-        SELECT id, username, password, status, create_time, failed_attempts, lock_time
+        SELECT id, username, password, status, create_time, failed_attempts, lock_time, nick_name
         FROM sys_user
         WHERE id = #{id}
     </select>
 
     <select id="findByUsernameWithLockInfo" resultMap="BaseResultMap">
-        SELECT id, username, password, status, create_time, failed_attempts, lock_time,
+        SELECT id,
+               username,
+               password,
+               status,
+               create_time,
+               failed_attempts,
+               lock_time,
+               nick_name,
                CASE
                    WHEN lock_time IS NOT NULL THEN
                        GREATEST(0, 7200 - TIMESTAMPDIFF(SECOND, lock_time, NOW()))
-                   ELSE NULL
-               END AS lock_remaining_seconds
+                   END AS lock_remaining_seconds
         FROM sys_user
         WHERE username = #{username}
     </select>
 
     <insert id="insert" parameterType="SysUser" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO sys_user (username, password, status, create_time)
-        VALUES (#{username}, #{password}, #{status}, #{createTime})
+        INSERT INTO sys_user (username, password, status, create_time, nick_name)
+        VALUES (#{username}, #{password}, #{status}, #{createTime}, #{nick_name})
     </insert>
 
     <update id="incrementFailedAttempts">

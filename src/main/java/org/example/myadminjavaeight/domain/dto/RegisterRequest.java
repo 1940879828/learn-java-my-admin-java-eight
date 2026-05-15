@@ -29,4 +29,8 @@ public class RegisterRequest implements Serializable {
   @Size(min = 6, max = 20, message = "密码长度必须在6-20个字符之间")
   @Schema(description = "密码", example = "123456")
   private String password;
+
+  @Size(max = 20, message = "昵称长度不能超过20个字符")
+  @Schema(description = "昵称（可选）", example = "小明")
+  private String nickName;
 }

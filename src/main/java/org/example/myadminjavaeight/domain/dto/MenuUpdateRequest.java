@@ -4,24 +4,38 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.myadminjavaeight.enums.MenuTypeEnum;
 
-import java.time.OffsetDateTime;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Setter
 @Getter
-public class MenuResponse {
-    private Long id;
-    private Integer parentId;
+public class MenuUpdateRequest {
+
+    @Size(max = 32)
     private String menuName;
-    private String menuCode;
+
     private MenuTypeEnum menuType;
+
+    @Size(max = 200)
     private String path;
+
+    @Size(max = 200)
     private String component;
+
+    @Pattern(regexp = "^[a-z]+:[a-z\\-]+$")
     private String perms;
+
+    @Size(max = 50)
     private String icon;
+
+    @Min(0)
     private Integer sortOrder;
+
     private Boolean visible;
+
     private Integer status;
-    private String createBy;
-    private Long createTime;
+
+    @Size(max = 255)
     private String remark;
 }

@@ -6,6 +6,7 @@ public enum ResultCode {
     USERNAME_EXISTS(400, "用户名已存在"),
     UNAUTHORIZED(401, "未登录或Token已过期"),
     FORBIDDEN(403, "没有权限"),
+    NOT_FOUND(40400, "资源不存在"),
     ERROR(500, "系统异常");
 
     private final Integer code;

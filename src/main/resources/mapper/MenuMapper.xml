@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.myadminjavaeight.mapper.MenuMapper">
+
+    <resultMap id="BaseResultMap" type="SysMenu">
+        <id column="id" property="id"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="menu_name" property="menuName"/>
+        <result column="menu_code" property="menuCode"/>
+        <result column="menu_type" property="menuType"/>
+        <result column="path" property="path"/>
+        <result column="component" property="component"/>
+        <result column="perms" property="perms"/>
+        <result column="icon" property="icon"/>
+        <result column="sort_order" property="sortOrder"/>
+        <result column="visible" property="visible"/>
+        <result column="status" property="status"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, parent_id, menu_name, menu_code, menu_type, path, component, perms, icon,
+        sort_order, visible, status, create_by, create_time, remark
+    </sql>
+
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM sys_menu
+        WHERE id = #{id}
+    </select>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM sys_menu
+        ORDER BY sort_order, id
+    </select>
+
+    <select id="findMenusByRoleId" resultMap="BaseResultMap">
+        SELECT m.id, m.parent_id, m.menu_name, m.menu_code, m.menu_type, m.path, m.component, m.perms, m.icon,
+               m.sort_order, m.visible, m.status, m.create_by, m.create_time, m.remark
+        FROM sys_menu m
+                 INNER JOIN sys_role_menu rm ON m.id = rm.menu_id
+        WHERE rm.role_id = #{roleId}
+          AND m.status = 1
+        ORDER BY m.sort_order
+    </select>
+
+    <select id="findMenusByUserId" resultMap="BaseResultMap">
+        SELECT DISTINCT m.id, m.parent_id, m.menu_name, m.menu_code, m.menu_type, m.path, m.component, m.perms, m.icon,
+                        m.sort_order, m.visible, m.status, m.create_by, m.create_time, m.remark
+        FROM sys_menu m
+                 INNER JOIN sys_role_menu rm ON m.id = rm.menu_id
+                 INNER JOIN sys_user_role ur ON rm.role_id = ur.role_id
+        WHERE ur.user_id = #{userId}
+          AND m.status = 1
+        ORDER BY m.sort_order
+    </select>
+
+    <insert id="insert" parameterType="org.example.jwtjavaeight.domain.entity.SysMenu" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_menu (parent_id, menu_name, menu_code, menu_type, path, component, perms, icon, sort_order, visible, status, create_by, remark)
+        VALUES (#{parentId}, #{menuName}, #{menuCode}, #{menuType}, #{path}, #{component}, #{perms}, #{icon}, #{sortOrder}, #{visible}, #{status}, #{createBy}, #{remark})
+    </insert>
+
+    <update id="update" parameterType="org.example.jwtjavaeight.domain.entity.SysMenu">
+        UPDATE sys_menu
+        <set>
+            <if test="menuName != null">menu_name = #{menuName},</if>
+            <if test="menuCode != null">menu_code = #{menuCode},</if>
+            <if test="menuType != null">menu_type = #{menuType},</if>
+            <if test="path != null">path = #{path},</if>
+            <if test="component != null">component = #{component},</if>
+            <if test="perms != null">perms = #{perms},</if>
+            <if test="icon != null">icon = #{icon},</if>
+            <if test="sortOrder != null">sort_order = #{sortOrder},</if>
+            <if test="visible != null">visible = #{visible},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM sys_menu WHERE id = #{id}
+    </delete>
+
+    <select id="findByFilter" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM sys_menu
+        <where>
+            <if test="filter.keyword != null and filter.keyword != ''">
+                AND (menu_name LIKE CONCAT('%', #{filter.keyword}, '%')
+                OR menu_code LIKE CONCAT('%', #{filter.keyword}, '%'))
+            </if>
+            <if test="filter.menuType != null">
+                AND menu_type = #{filter.menuType}
+            </if>
+            <if test="filter.visible != null">
+                AND visible = #{filter.visible}
+            </if>
+            <if test="filter.status != null">
+                AND status = #{filter.status}
+            </if>
+            <if test="filter.parentId != null">
+                AND parent_id = #{filter.parentId}
+            </if>
+        </where>
+        ORDER BY
+        <choose>
+            <when test="filter.safeSort == 'sort_order'">sort_order</when>
+            <when test="filter.safeSort == 'create_time'">create_time</when>
+            <otherwise>id</otherwise>
+        </choose>
+        <choose>
+            <when test="filter.safeOrder == 'desc'">DESC</when>
+            <otherwise>ASC</otherwise>
+        </choose>
+        LIMIT #{filter.size} OFFSET #{filter.offset}
+    </select>
+
+    <select id="countByFilter" resultType="long">
+        SELECT COUNT(*)
+        FROM sys_menu
+        <where>
+            <if test="filter.keyword != null and filter.keyword != ''">
+                AND (menu_name LIKE CONCAT('%', #{filter.keyword}, '%')
+                OR menu_code LIKE CONCAT('%', #{filter.keyword}, '%'))
+            </if>
+            <if test="filter.menuType != null">
+                AND menu_type = #{filter.menuType}
+            </if>
+            <if test="filter.visible != null">
+                AND visible = #{filter.visible}
+            </if>
+            <if test="filter.status != null">
+                AND status = #{filter.status}
+            </if>
+            <if test="filter.parentId != null">
+                AND parent_id = #{filter.parentId}
+            </if>
+        </where>
+    </select>
+
+</mapper>
